@@ -4,7 +4,23 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-Vue.config.productionTip = false
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import colors from 'vuetify/es5/util/colors'
+
+//Vuetify
+Vue.use(Vuetify, {
+  theme:{
+    primary: colors.blueGrey.base,
+    secondary: colors.blueGrey.lighten3,
+    accent: colors.cyan.darken4,
+    error: colors.red.lighten1,
+    warning: colors.yellow.lighten1,
+    info: colors.blue.lighten2,
+    success: colors.green.lighten1
+  }
+ }),
 
 /* eslint-disable no-new */
 new Vue({
@@ -13,3 +29,5 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+
