@@ -1,16 +1,17 @@
 package de.jonashackt.springbootvuejs.repository;
 
-
-import de.jonashackt.springbootvuejs.domain.User;
+import de.jonashackt.springbootvuejs.domain.RegisterUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<RegisterUser, Long> {
 
-    List<User> findByLastName(@Param("lastname") String lastname);
+    List<RegisterUser> findByname(@Param("name") String name);
 
-    List<User> findByFirstName(@Param("firstname") String firstname);
+    List<RegisterUser> findByemail(@Param("email") String email);
+
+    List<RegisterUser> findBypassword(@Param("password") String password);
 
 }
