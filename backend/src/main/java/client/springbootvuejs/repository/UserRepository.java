@@ -1,6 +1,6 @@
-package de.jonashackt.springbootvuejs.repository;
+package client.springbootvuejs.repository;
 
-import de.jonashackt.springbootvuejs.domain.RegisterUser;
+import client.springbootvuejs.domain.RegisterUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 

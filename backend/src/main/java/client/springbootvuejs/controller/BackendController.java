@@ -1,4 +1,4 @@
-package de.jonashackt.springbootvuejs.controller;
+package client.springbootvuejs.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.jonashackt.springbootvuejs.domain.RegisterUser;
-import de.jonashackt.springbootvuejs.repository.UserRepository;
+import client.springbootvuejs.domain.RegisterUser;
+import client.springbootvuejs.repository.UserRepository;
 
 @RestController()
 @RequestMapping("/api")
