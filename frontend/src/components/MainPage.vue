@@ -17,27 +17,27 @@ Main page register user
                 Login<v-icon>create</v-icon>
               </v-tab>
 
-              <v-tab href="#tabRegister" @click="showthisBaby=false, clearForm">
+              <v-tab href="#tabRegister" @click="showthisBaby=false">
                 Register<v-icon>person_add</v-icon>
               </v-tab>
 
               <v-tab-item
                 :id="'tabLogin'">
-                <v-card flat v-show="!login.showthisBaby">
+                <v-card flat v-show="!showthisBaby">
                   <v-card-text>Login
                     <v-text-field label="Email" prepend-icon="email"
-                    v-model="login.email"
+                    v-model="login.mail"
                     :rules="[rules.required, rules.email, rules.emailRules]"                                   
                     ></v-text-field>
                     <v-text-field label="Password" prepend-icon="vpn_key"
-                    v-model="login.password" @click:append="showPass =!showPass"
+                    v-model="login.pass" @click:append="showPass =!showPass"
                     :type="showPass ? 'showPass' : 'password'"
                     :append-icon="showPass? 'visibility_off' : 'visibility'"
                     :rules="[rules.required]">
                     >
                     </v-text-field>
 
-                    <v-btn color="blue-grey lighten-4" @click="login.showthisBaby = true">Next</v-btn>
+                    <v-btn color="blue-grey lighten-4" @click="compareUser()">Next</v-btn>
                   </v-card-text>
 
                 </v-card>
@@ -88,15 +88,15 @@ Main page register user
     data () {
       return {
         showPass: false,
+        showthisBaby: false,
         login:{
-          emailLogin: '',
-          passwordLogin:'',
-          showthisBaby: false,
+          mail:'',
+          pass:'',
           otp:'',
         },
         userReg:{
           email:'',
-          name: '',
+          name:'',
           password:'',
           id: 0,
         },
@@ -120,6 +120,9 @@ Main page register user
     },
     methods: {
       // Fetches posts when the component is created.
+      navigate(route) {
+        this.$router.push(route)
+      },
       createUser () {
         var params = new URLSearchParams()
         params.append('name', this.userReg.name)
@@ -132,12 +135,33 @@ Main page register user
             this.response = response.data
             this.user.id = response.data
             console.log(response.data)
-            this.showResponse = true
           })
           .catch(e => {
             this.errors.push(e)
           })
-          }
-        }
+      },
+      compareUser() {
+        var params = new URLSearchParams()
+        params.append('mail', this.login.mail)
+        params.append('pass', this.login.pass)
+
+       AXIOS.get(`/RegisterUser/` + 1)
+        .then(response => {
+            // JSON responses are automatically parsed.
+            this.retrievedUser = response.data
+            console.log(response.data)
+            this.retrievedUser.email = mail
+            console.log(this.retrievedUser.name)
+            console.log(mail)
+            if (this.login.mail == maildb){
+              console.log("email")
+            }
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+
+      }
+    }
   }
 </script>
