@@ -2,6 +2,28 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Application",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "client.springbootvuejs.Application",
+            "args": "",
+            "projectName": "backend"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - SpringBootVuejsApplication",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "client.springbootvuejs.SpringBootVuejsApplication",
+            "args": "",
+            "projectName": "backend"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - SpringBootVuejsApplication",
             "request": "launch",
             "cwd": "${workspaceFolder}",

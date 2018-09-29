@@ -111,7 +111,7 @@
             },
             Number: value => {
               const number = /[0-9]/g 
-              return number.test(value) || 'Needs numerical value'
+              return number.test(value) || 'Needs !! value'
             }
           },
           email:{
@@ -141,7 +141,7 @@
           email: this.userReg.email,
           password: this.userReg.password
         };
-        AXIOS.post("/RegisterUser", data)
+        AXIOS.post("/RegisterUser/", data)
           .then(response => {
             this.customer.id = response.data.id;
             console.log(response.data);
@@ -152,7 +152,7 @@
         this.submitted = true;  
       },
       compareUser() {
-
+          
       }
     }
   }

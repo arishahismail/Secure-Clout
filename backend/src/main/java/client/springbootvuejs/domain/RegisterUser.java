@@ -2,9 +2,8 @@ package client.springbootvuejs.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-@Document(collection = "users")
+@Document(collection = "_users")
 
 public class RegisterUser {
     @Id
