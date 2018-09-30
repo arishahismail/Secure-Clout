@@ -1,5 +1,6 @@
 package client.springbootvuejs.domain;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 public class RegisterUser {
     @Id
-    private int id;
+    private ObjectId id;
     private String name;
     private String email;
     private String password;
@@ -22,11 +23,11 @@ public class RegisterUser {
         this.password = password;
     }
 
-    public int getid() {
+    public ObjectId getid() {
         return id;
     }
 
-    public void set_id(int id) {
+    public void set_id(ObjectId id) {
         this.id = id;
     }
 

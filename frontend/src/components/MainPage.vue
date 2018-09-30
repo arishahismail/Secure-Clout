@@ -96,6 +96,7 @@
           email:'',
           name:'',
           password:'',
+          id: 0,
         },
         rules: {
           required: value => !!value || 'Required', 
@@ -143,13 +144,13 @@
         };
         AXIOS.post("/RegisterUser/", data)
           .then(response => {
-            this.customer.id = response.data.id;
+            this.userReg.id = response.data.id;
+            console.log("Successfully registered user");
             console.log(response.data);
           })
           .catch(e => {
             console.log(e);
           });
-        this.submitted = true;  
       },
       compareUser() {
           

@@ -33,6 +33,7 @@ public class BackendController {
     public RegisterUser postRegisterUser(@RequestBody RegisterUser registeruser) {
         RegisterUser _users = repository
                 .save(new RegisterUser(registeruser.getName(), registeruser.getEmail(), registeruser.getPassword()));
+
         return _users;
     }
 
