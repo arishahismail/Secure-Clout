@@ -112,7 +112,7 @@
             },
             Number: value => {
               const number = /[0-9]/g 
-              return number.test(value) || 'Needs !! value'
+              return number.test(value) || 'Needs numerical value'
             }
           },
           email:{
@@ -132,28 +132,34 @@
         this.$router.push(route)
       },
       createUser () {
-        //validate all input is filled
-        // this.$validator.validateAll()
-        // console.log("testing")
-
-        //save data
         var data ={
           name: this.userReg.name,
           email: this.userReg.email,
           password: this.userReg.password
         };
+        console.log("what")
         AXIOS.post("/RegisterUser/", data)
           .then(response => {
             this.userReg.id = response.data.id;
             console.log("Successfully registered user");
             console.log(response.data);
+            // this.userReg = {};
           })
           .catch(e => {
             console.log(e);
           });
+          
       },
       compareUser() {
-          
+          AXIOS.get("/RegisterUser/{email}", this.login.mail)
+          .then(response => {
+            var data = response.data;
+            console.log(response.data)
+            console.log(response.data.email);
+          })
+          .catch(e=>{
+            console.log(e);
+          })
       }
     }
   }

@@ -18,17 +18,6 @@
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
-            "mainClass": "client.springbootvuejs.SpringBootVuejsApplication",
-            "args": "",
-            "projectName": "backend"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - SpringBootVuejsApplication",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "stopOnEntry": false,
             "mainClass": "de.jonashackt.springbootvuejs.SpringBootVuejsApplication",
             "args": "",
             "projectName": "backend"

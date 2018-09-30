@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,12 +25,10 @@ public class BackendController {
         System.out.println("Getting all users...");
         List<RegisterUser> user = new ArrayList<>();
         repository.findAll().forEach(user::add);
-
         return user;
-
     }
 
-    @PostMapping("/RegisterUser/")
+    @PostMapping("/RegisterUser")
     public RegisterUser postRegisterUser(@RequestBody RegisterUser registeruser) {
         RegisterUser _users = repository
                 .save(new RegisterUser(registeruser.getName(), registeruser.getEmail(), registeruser.getPassword()));
@@ -37,5 +36,12 @@ public class BackendController {
         return _users;
     }
 
-    // @DeleteMapping
+    @GetMapping("/RegisterUser/{email}")
+    public RegisterUser findByemail(@PathVariable String email) {
+        RegisterUser user = repository.findByemail(email);
+        System.out.println(email);
+        return user;
+
+    }
+
 }
