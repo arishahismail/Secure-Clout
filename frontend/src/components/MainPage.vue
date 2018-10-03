@@ -41,8 +41,9 @@
                 <v-card flat v-show="showthisBaby">
                   <v-card-text>Enter the code sent to your email address
                     <v-text-field solo v-model="login.otp"
-                    ></v-text-field>
-                    <v-btn color="blue-grey lighten-4" @click="showthisBaby = false">Lul It works</v-btn>
+                    ></v-text-field>                    
+                    <v-btn color="blue-grey lighten-4" @click="sendOTP">Send Code</v-btn>
+                    <v-btn color="blue-grey lighten-4" @click="showthisBaby = false">Submit</v-btn>
                   </v-card-text>
                 </v-card>
               </v-tab-item>
@@ -138,12 +139,11 @@
           password: this.userReg.password
         };
         console.log("what")
-        AXIOS.post("/RegisterUser/", data)
+        AXIOS.post("/signup/", data)
           .then(response => {
-            this.userReg.id = response.data.id;
             console.log("Successfully registered user");
             console.log(response.data);
-            // this.userReg = {};
+            this.userReg = {};
           })
           .catch(e => {
             console.log(e);
@@ -151,15 +151,20 @@
           
       },
       compareUser() {
-          AXIOS.get("/RegisterUser/{email}", this.login.mail)
-          .then(response => {
-            var data = response.data;
-            console.log(response.data)
-            console.log(response.data.email);
-          })
-          .catch(e=>{
-            console.log(e);
-          })
+        this.showthisBaby = true
+        // var mail = this.login.mail;
+          AXIOS.get("/authenticate")
+        //   .then(response => {
+        //     var data = response.data;
+        //     console.log(response.data)
+
+        //   })
+        //   .catch(e=>{
+        //     console.log(e);
+        //   })
+      },
+      sendOTP() {
+        this.$router.push({name: 'Home'})
       }
     }
   }

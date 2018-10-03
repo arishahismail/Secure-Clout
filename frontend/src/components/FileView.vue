@@ -29,17 +29,8 @@
       
       <span class="title ml-3 mr-5">Secure&nbsp;<span class="font-weight-light">Clout</span></span>
       <v-spacer></v-spacer>
-      
-      <v-text-field
-        flat
-        solo-inverted
-        prepend-inner-icon="search"
-        label="Search"
-      ></v-text-field>
+    
       <v-spacer></v-spacer>
-      <v-btn left icon>
-        <v-icon>notifications</v-icon>
-      </v-btn>
       <v-btn icon>
         <v-icon>person</v-icon>
       </v-btn>
@@ -54,12 +45,54 @@
               <v-spacer></v-spacer>
               
               <!--Button to select upload file -->
-              
-              <v-btn color ="primary darken-2" right fab small flat 
+              <v-btn color ="primary darken-2" right fab flat 
                 id="fileInputButton"  @click.native.stop="dialog =!dialog"> 
-                <v-icon>more_horiz</v-icon>
+                <v-icon>cloud_download</v-icon>
+              </v-btn>
+
+              <v-btn color ="primary darken-2" right fab flat 
+                id="fileInputButton"  @click.native.stop="dialogDelete =!dialogDelete"> 
+                <v-icon>delete</v-icon>
+              </v-btn>
+
+              <!--This is floating box when click new file delete -->
+              <v-dialog v-model="dialogDelete" max-width="500px">
+                <v-card>
+                      <v-card-text class="text">Are you sure you want to delete selected file? </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                       <v-btn flat dark color="red" @click.native="dialogDelete = false">Delete</v-btn>
+                        <v-btn flat dark color="primary" @click.native="dialogDelete = false">Cancel</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>                
+               <v-btn color ="primary darken-2" right small round 
+                id="fileInputButton"  @click.native.stop="dialog =!dialog"> 
+                <v-icon>add</v-icon> Upload New File
               </v-btn>
             </v-card-title>
+
+            <!--This is floating box when click new file upload -->
+              <v-dialog v-model="dialog" max-width="500px">
+                <v-card>
+                      <v-card-title class="title">Upload file</v-card-title>
+                      <div class='dropbox'>
+                          <input class='input-file' type="file" multiple 
+                            @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
+                            v-file="FileName"
+                             id= 'filedialog'
+                            accept="/*" >
+                      </div>
+                      <v-card-text class="text">File selected: {{filesChange}}</v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn :loading="loading3" :disabled="loading3" color="blue"
+                          class="white--text"
+                           @click.native="dialog = false">Upload <v-icon right dark>cloud_upload</v-icon></v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
 
              <!-- This is table of data files -->
             <v-data-table 
@@ -103,19 +136,7 @@
                   </td>
                   <td class="text-xs-left">{{ props.item.date }}</td>
                   <td class="text-xs-left">{{ props.item.size }}</td>
-                  <td class="xs-right">
-                  <v-icon
-                    small     
-                    class="xs-right"     
-                    @click="downloadItem(props.item)">
-                    cloud_download
-                  </v-icon>
-                  <v-icon
-                  small
-                    @click="deleteItem(props.item)">
-                    delete
-                  </v-icon>
-                </td>
+                
                 </template>
               </v-data-table>
 
@@ -131,6 +152,8 @@
     data(){
       return {
         lengthtext: (v) => v.length <= 15 || 'Input too long!',
+        dialogDownload: false,
+        dialogDelete: false,
         dialog: false,
         search: '',
         selected: true,
@@ -144,22 +167,21 @@
           },
           { text: 'Date', value: 'date' },          
           { text: 'Size', value: 'size', sortable: false },
-          { text: '', value: 'actions', sortable: false, align:'right' },
          
         ],
         //this is file data
         FileName: [
           {
             value: false,
-            name: '',
-            date: 'sdsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsds',            
-            size: '38mb',
+            name: 'Test',
+            date: '2018-09-28',            
+            size: '1kb',
           },
             {
             value: false,
             name: 'ugh',
-            size: '38mb',
-            date: '123123',
+            size: '1kb',
+            date: '2018-09-28',
           },
         ],
         //this is for menu
@@ -168,7 +190,6 @@
           { icon: 'home', text: 'Home' },
           { icon: 'folder_open', text: 'Files' },
           { divider: true },
-          { icon: 'settings', text: 'Settings' },
           { icon: 'help', text: 'About' }
         ],
         methods: {

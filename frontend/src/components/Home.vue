@@ -30,16 +30,7 @@
       <span class="title ml-3 mr-5">Secure&nbsp;<span class="font-weight-light">Clout</span></span>
       <v-spacer></v-spacer>
       
-      <v-text-field
-        flat
-        solo-inverted
-        prepend-inner-icon="search"
-        label="Search"
-      ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn left icon>
-        <v-icon>notifications</v-icon>
-      </v-btn>
       <v-btn icon>
         <v-icon>person</v-icon>
       </v-btn>
@@ -87,6 +78,7 @@
                 :headers="headers"
                 :items="FileName"
                 v-model="selected"
+                hide-actions
                 item-key="name"
                 class="elevation-1"
               >
@@ -103,7 +95,6 @@
                 <template slot="items" slot-scope="props">
                   <td class="text-xs-left">{{ props.item.name }}</td>
                   <td class="text-xs-left">{{ props.item.date }}</td>
-                  <td class="text-xs-left">{{ props.item.size }}</td>
                 </template>
               </v-data-table>
 
@@ -125,26 +116,22 @@
           {
             text: 'File Name',
             align: 'left',
-            sortable: true,
+            sortable: false,
             value: 'name'
           },
-
           { text: 'Date', value: 'date' },          
-          { text: 'Size', value: 'size' },
         
         ],
         FileName: [
           {
             value: false,
-            name: 'test',
-            date: '23',            
-            size: '38mb',
+            name: 'Test',
+            date: '2018-09-28',            
           },
             {
             value: false,
             name: 'ugh',
-            size: '38mb',
-            date: '123123',
+            date: '2018-09-28',
           },
         ],
         drawer: null,
@@ -152,7 +139,6 @@
           { icon: 'home', text: 'Home' },
           { icon: 'folder_open', text: 'Files' },
           { divider: true },
-          { icon: 'settings', text: 'Settings' },
           { icon: 'help', text: 'About' }
         ],
         snackbar:false,

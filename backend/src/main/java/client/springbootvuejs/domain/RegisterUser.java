@@ -57,6 +57,7 @@ public class RegisterUser {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", name=" + name + ", email" + email + ", password" + password + "]";
+        return String.format("User details are: id= '%s', name= '%s', email= '%s', password = '%s'}\n", id, name, email,
+                password);
     }
 }
