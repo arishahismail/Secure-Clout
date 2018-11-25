@@ -2,6 +2,7 @@ package client.springbootvuejs.controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,12 +40,11 @@ public class BackendUserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public List<RegisterUser> findByEmail(@PathVariable String email) {
-        List<RegisterUser> users = repository.findByEmail(email);
-        return users;
+    public String getUsers() {
+        return repository.findAll().toString();
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.GET)
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public char[] validateUser(@PathVariable String code) {
         OTP otp = new OTP();
         char[] temppass = otp.temp_pass();
