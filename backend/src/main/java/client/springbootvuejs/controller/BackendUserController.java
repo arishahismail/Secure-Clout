@@ -2,9 +2,11 @@ package client.springbootvuejs.controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.solr.SolrProperties;
+import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ import client.springbootvuejs.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api")
-public class BackendUserController {
+public class BackendUserController implements ErrorController {
     @Autowired
     UserRepository repository;
 
@@ -39,17 +41,50 @@ public class BackendUserController {
         return registeruser;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String getUsers() {
-        return repository.findAll().toString();
+    @RequestMapping("/all")
+    public List<RegisterUser> getAll() {
+
+        try {
+            return repository.findAll();
+        } catch (Exception e) {
+            System.out.println("The error is " + e + " KAPPPPPPPPPPPPPPPPPAAAAAAAAAAAAAAA");
+        }
+        return repository.findAll();
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String justTry() {
+
+        try {
+            return "We made it";
+        } catch (Exception e) {
+            return "Fucckkk";
+        }
+    }
+
+    // @RequestMapping(value = "/login")
+    // public List<RegisterUser> getId() {
+    // return repository.findOne(RegisterUser.getID(id));
+    // }
+
+    @RequestMapping(value = "/authenticate", method = RequestMethod.GET)
     public char[] validateUser(@PathVariable String code) {
         OTP otp = new OTP();
         char[] temppass = otp.temp_pass();
         System.out.println(temppass);
         return temppass;
+    }
+
+    private static final String PATH = "/error";
+
+    @RequestMapping(value = PATH)
+    public String error() {
+        return "Error handling";
+    }
+
+    @Override
+    public String getErrorPath() {
+        return PATH;
     }
 
 }

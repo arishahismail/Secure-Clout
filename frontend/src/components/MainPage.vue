@@ -152,7 +152,15 @@
           });
       },
       signIn() {
-        this.showthisBaby = true
+        //this.showthisBaby = true
+        AXIOS.get("/all/")
+          .then(response => {
+            console.log("got data");
+            console.log(response)
+          })
+          .catch(e => {
+            console.log(e);
+          })
       },
       sendOTP() {
         this.$router.push({

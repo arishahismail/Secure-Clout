@@ -2,6 +2,7 @@ package client.springbootvuejs.repository;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import client.springbootvuejs.domain.RegisterUser;

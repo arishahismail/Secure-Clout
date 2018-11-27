@@ -60,4 +60,9 @@ public class RegisterUser {
         return String.format("User details are: id= '%s', name= '%s', email= '%s', password = '%s'}\n", id, name, email,
                 password);
     }
+
+    public static RegisterUser getID(ObjectId id2) {
+        return null;
+    }
+
 }
