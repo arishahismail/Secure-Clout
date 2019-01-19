@@ -1,15 +1,12 @@
 package client.springbootvuejs.repository;
 
-import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import client.springbootvuejs.domain.RegisterUser;
+import client.springbootvuejs.domain.CloutUser;
 
-public interface UserRepository extends MongoRepository<RegisterUser, String> {
+public interface UserRepository extends MongoRepository<CloutUser, String> {
 
-    List<RegisterUser> findByEmail(String email);
+    CloutUser findByEmail(String email);
 
-    // Iterable<RegisterUser> findAll();
 }

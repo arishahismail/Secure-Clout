@@ -32,7 +32,7 @@
                     :rules="[rules.required]">
                     >
                   </v-text-field>
-
+                
                   <v-btn color="blue-grey lighten-4" @click="signIn()">Next</v-btn>
                 </v-card-text>
 
@@ -58,15 +58,14 @@
                   </v-text-field>
                   <v-btn color="blue-grey lighten-4" @click="createUser()">Sign Up</v-btn>
                 </v-card-text>
-                <v-snackbar v-model="snackbar" :timeout="timeout">
-                  {{snackText}}
-                  <v-btn dark flat color="red" @click="snackbar = false"> Close</v-btn>
-                </v-snackbar>
+                
               </v-card>
             </v-tab-item>
           </v-tabs>
-
-
+          <v-snackbar v-model="snackbar" :timeout="timeout">
+                  {{snackText}}
+                  <v-btn dark flat color="red" @click="snackbar = false"> Close</v-btn>
+          </v-snackbar>
         </v-flex>
       </v-layout>
     </v-container>
@@ -86,6 +85,7 @@
         timeout: 6000,
         showPass: false,
         showthisBaby: false,
+        retrieveduser: {},
         login: {
           mail: '',
           pass: '',
@@ -152,11 +152,16 @@
           });
       },
       signIn() {
-        //this.showthisBaby = true
-        AXIOS.get("/all/")
+        AXIOS.get(`/login/` + this.login.mail + `/` + this.login.pass )
           .then(response => {
-            console.log("got data");
-            console.log(response)
+            if (response.data == "") {
+              console.log(response.data)
+              this.snackbar = true,
+              this.snackText = "Email or password incorrect"
+            }
+            else {
+              this.showthisBaby = true
+            }
           })
           .catch(e => {
             console.log(e);

@@ -6,18 +6,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "_users")
 
-public class RegisterUser {
+public class CloutUser {
     @Id
     private ObjectId id;
     private String name;
     private String email;
     private String password;
 
-    // Constructors
-    public RegisterUser() {
-    }
-
-    public RegisterUser(String name, String email, String password) {
+    public CloutUser(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -57,12 +53,7 @@ public class RegisterUser {
 
     @Override
     public String toString() {
-        return String.format("User details are: id= '%s', name= '%s', email= '%s', password = '%s'}\n", id, name, email,
-                password);
-    }
-
-    public static RegisterUser getID(ObjectId id2) {
-        return null;
+        return String.format(password);
     }
 
 }

@@ -4,35 +4,35 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.solr.SolrProperties;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.util.SocketUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import client.springbootvuejs.domain.CloutUser;
 import client.springbootvuejs.domain.OTP;
 import client.springbootvuejs.domain.PasswordHashing;
-import client.springbootvuejs.domain.RegisterUser;
 import client.springbootvuejs.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api")
-public class BackendUserController implements ErrorController {
+public class BackendUserController {
     @Autowired
     UserRepository repository;
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public RegisterUser postRegisterUser(@RequestBody RegisterUser registeruser) {
+    public CloutUser postRegisterUser(@RequestBody CloutUser registeruser) {
         PasswordHashing encrypt = new PasswordHashing();
         String hashpass;
         try {
             hashpass = encrypt.hash(registeruser.getPassword());
             System.out.println(hashpass);
-            RegisterUser _users = repository
-                    .save(new RegisterUser(registeruser.getName(), registeruser.getEmail(), hashpass));
+            CloutUser _users = repository
+                    .save(new CloutUser(registeruser.getName(), registeruser.getEmail(), hashpass));
             return _users;
 
         } catch (NoSuchAlgorithmException e) {
@@ -40,32 +40,32 @@ public class BackendUserController implements ErrorController {
         }
         return registeruser;
     }
-
-    @RequestMapping("/all")
-    public List<RegisterUser> getAll() {
-
-        try {
-            return repository.findAll();
-        } catch (Exception e) {
-            System.out.println("The error is " + e + " KAPPPPPPPPPPPPPPPPPAAAAAAAAAAAAAAA");
+   
+    @RequestMapping(value="/login/{email}/{pass}", method = RequestMethod.GET)    
+    public CloutUser getUser(@PathVariable ("email")String email, @PathVariable ("pass") String pass) {
+        System.out.println("Getting information "+ email);
+        CloutUser user = repository.findByEmail(email);
+        if (user == null) {
+			return null;
         }
-        return repository.findAll();
-    }
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String justTry() {
-
-        try {
-            return "We made it";
-        } catch (Exception e) {
-            return "Fucckkk";
+        else {
+            try {
+                PasswordHashing decrypt = new PasswordHashing();
+                String hashpass = user.getPassword();
+                System.out.println(hashpass);
+                boolean comparepass = decrypt.checkhash(pass, hashpass);
+                if (comparepass = true) {
+                    System.out.println("hash similar");
+                    return user;
+                } else {
+                    return null;
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
         }
+        return null;
     }
-
-    // @RequestMapping(value = "/login")
-    // public List<RegisterUser> getId() {
-    // return repository.findOne(RegisterUser.getID(id));
-    // }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.GET)
     public char[] validateUser(@PathVariable String code) {
@@ -75,16 +75,14 @@ public class BackendUserController implements ErrorController {
         return temppass;
     }
 
-    private static final String PATH = "/error";
-
-    @RequestMapping(value = PATH)
-    public String error() {
-        return "Error handling";
+    @RequestMapping("/tell")
+    public List<CloutUser> getAll() {
+        try {
+            System.out.println(repository.findAll());
+            return repository.findAll();
+        } catch (Exception e) {
+            System.out.println("The error is " + e + " KAPPPPPPPPPPPPPPPPPAAAAAAAAAAAAAAA");
+        }
+        return repository.findAll();
     }
-
-    @Override
-    public String getErrorPath() {
-        return PATH;
-    }
-
 }
