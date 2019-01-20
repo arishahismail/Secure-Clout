@@ -67,7 +67,7 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn flat color="primary" @click.native="dialog = false">Submit</v-btn>
+                        <v-btn flat color="primary" @click="upload()">Submit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -106,6 +106,9 @@
 </template>
 
 <script>
+import {
+    AXIOS
+  } from './http-common'
   export default {
     data(){
       return {
@@ -146,14 +149,26 @@
         x:null,
         mode: '',
         timeout:6000,
-        text:'File being scanned and uploaded',
-        methods: {
+        text:'File being scanned and uploaded'
+        
+        }
+      },
+      methods: {
           filesChange(event){
             this.somedata = event.target.files[0]
-          }
-        }
-      }
+          },
+          upload() {
+            AXIOS.post(`/upload`)
+              .then(response => {
+                console.log("halo issa call")
+                console.log(this.$store.state.email)
+              })
+              .catch(e => {
+                console.log(e);
+              })
+          },
     }
+    
   }
   
 </script>

@@ -40,8 +40,8 @@
               <v-card flat v-show="showthisBaby">
                 <v-card-text>Enter the code sent to your email address
                   <v-text-field solo v-model="login.otp"></v-text-field>
-                  <v-btn color="blue-grey lighten-4" @click="sendOTP">Send Code</v-btn>
-                  <v-btn color="blue-grey lighten-4" @click="showthisBaby = false">Submit</v-btn>
+                  <v-btn color="blue-grey lighten-4" @click="sendOTP()">Send Code</v-btn>
+                  <v-btn color="blue-grey lighten-4" @click="compareOTP()">Submit</v-btn>
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -85,7 +85,7 @@
         timeout: 6000,
         showPass: false,
         showthisBaby: false,
-        retrieveduser: {},
+        authenticate:'',
         login: {
           mail: '',
           pass: '',
@@ -160,6 +160,7 @@
               this.snackText = "Email or password incorrect"
             }
             else {
+              this.$store.dispatch('setemail', this.login.mail)
               this.showthisBaby = true
             }
           })
@@ -168,10 +169,28 @@
           })
       },
       sendOTP() {
-        this.$router.push({
-          name: 'Home'
-        })
-      }
+        AXIOS.get(`/otp`)
+          .then(response => {
+            console.log (response.data)
+            this.authenticate = response.data
+            this.snackbar= true,
+            this.snackText="Check your email, a code has been sent to you for authentication"
+          })
+          .catch(e=>{
+            console.log(e);
+          })
+      },
+      compareOTP(){
+        if (this.login.otp == this.authenticate) {
+          this.$router.push({
+            name: 'Home'
+          })
+        }
+        else {
+          this.snackbar = true
+          this.snackText="Incorrect code. Try again"
+        }
+        }
     }
   }
 
