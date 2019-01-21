@@ -67,7 +67,7 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn flat color="primary" @click="upload()">Submit</v-btn>
+                        <v-btn flat color="primary" @click="download()">Submit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -167,13 +167,18 @@ import {
           //   this.selected = event.target.name
           // },
           upload() {
-            AXIOS.post(`/upload/` + this.$store.state.email + `/` + this.selectedFile + `/` + this.file_name)
+            var data = {
+              email: "ismailarishah@gmail.com",//this.$store.state.email,
+              file: "cleartext.txt", //this.selectedFile,
+              file_name: this.file_name
+            };
+            AXIOS.post(`/upload/` + data.email + `/` + data.file + `/` + data.file_name)
               .then(response => {
                 console.log("halo issa call")
                 console.log(this.$store.state.email)
                 if (response.data == "success") {
                   this.snackbar = true
-                  this.snackText = "Successfull encrypted and uploaded file"
+                  this.snackText = "Successful encrypted and uploaded file"
                   this.dialog = false
                 } 
                 else {
@@ -184,11 +189,20 @@ import {
               .catch(e => {
                 console.log(e);
               })
-            console.log(this.selectedFile)
-            console.log(this.file_name)
-            
           },
-          
+          download() {
+            var data = {
+              email: "ismailarishah@gmail.com",//this.$store.state.email,
+              file_name: "test"
+            };
+            AXIOS.post(`/download`)
+              .then(response => {
+                console.log(response)
+              })
+              .catch(e => {
+                console.log(e);
+              })
+          }
     }
     
   }

@@ -31,16 +31,40 @@ public class EncryptDecrypt {
         try {
             SecretKey key = KeyGenerator.getInstance("DES").generateKey();
             AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
-
             ecipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+            ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
+
+            encrypt(new FileInputStream(file_location), new FileOutputStream(encryptFile));
+            
+        } catch (FileNotFoundException e) {
+            System.out.println("File Not Found:" + e.getMessage());
+            return;
+        } catch (InvalidAlgorithmParameterException e) {
+            System.out.println("Invalid Alogorithm Parameter:" + e.getMessage());
+            return;
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("No Such Algorithm:" + e.getMessage());
+            return;
+        } catch (NoSuchPaddingException e) {
+            System.out.println("No Such Padding:" + e.getMessage());
+            return;
+        } catch (InvalidKeyException e) {
+            System.out.println("Invalid Key:" + e.getMessage());
+            return ;
+        }
+
+    }
+
+    public void FileDecrypt(String encryptFile, String decryptFile) {
+        try {
+            SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+            AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
 
             dcipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
 
-            ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
-
             dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
 
-            encrypt(new FileInputStream(file_location), new FileOutputStream(encryptFile));
+            decrypt(new FileInputStream(encryptFile), new FileOutputStream(decryptFile));
             
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found:" + e.getMessage());
@@ -73,11 +97,10 @@ public class EncryptDecrypt {
             }
             // close all streams
             os.close();
-            System.out.println(os);
         } catch (IOException e) {
             System.out.println("I/O Error:" + e.getMessage());
         }
-        System.out.println("this is what?" + os);
+        System.out.println("this is what? " + os);
     }
 
     private static void decrypt(InputStream is, OutputStream os) {

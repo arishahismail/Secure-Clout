@@ -9,6 +9,8 @@ public interface FileRepository {
 
     List<CloutFiles> findByemail();
 
+    CloutFiles findByfileName(String file_name);
+
     CloutFiles updateFiles(CloutFiles cloutfiles);
 
     void deleteFile(CloutFiles cloutfiles);

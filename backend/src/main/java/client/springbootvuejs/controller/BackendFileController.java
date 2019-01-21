@@ -10,10 +10,11 @@ import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import client.springbootvuejs.domain.CloutFiles;
@@ -30,17 +31,19 @@ public class BackendFileController implements FileRepository {
     public BackendFileController(MongoTemplate mongoTemplate){
         this.mongoTemplate = mongoTemplate;
     }
-
-    @RequestMapping(value="/upload/{email}/{file}/{file_name}", method = RequestMethod.POST)
-    public String singleFileUpload(@RequestParam("file") String multipart, @RequestParam("email") String email, @RequestParam("file_name")String file_name, String date) {
+ 
+    @RequestMapping(value="/upload/{email}/{file}/{filename}", method = RequestMethod.POST)
+    public String FileUpload(@PathVariable("email") String email, @PathVariable ("file") String filelocation, @PathVariable ("filename") String filename) {
         try {
             CloutFiles cloutfiles = new CloutFiles();
-            cloutfiles.setuser_id("ismailarishah@gmail.com");
-            multipart = "encrypted.dat";
+            cloutfiles.setuser_id(email); 
+
+            String toEncrypt = filename + ".dat";
+            String file_location = "/Users/Arishah/Desktop/" + filelocation;
             EncryptDecrypt encrypt = new EncryptDecrypt();
-            encrypt.FileEncrypt("/Users/Arishah/Documents/GitHub/Secure-Clout/backend/src/main/java/client/cleartext.txt/",multipart);
-            cloutfiles.set_file(new Binary(BsonBinarySubType.BINARY, multipart.getBytes()));
-            cloutfiles.setfile_name("namename");
+            encrypt.FileEncrypt(file_location,toEncrypt);
+            cloutfiles.set_file(new Binary(BsonBinarySubType.BINARY, toEncrypt.getBytes()));
+            cloutfiles.setfile_name(filename);
             cloutfiles.set_date(new Date());
             mongoTemplate.save(cloutfiles);
             System.out.println(cloutfiles);
@@ -51,31 +54,37 @@ public class BackendFileController implements FileRepository {
         return "success";
     }
 
+    // @RequestMapping(value ="/download/{email}/{filename}", method = RequestMethod.GET)
+    // public String retrieveFile(@PathVariable("email") String email, @PathVariable ("filename") String filename){
     @RequestMapping(value ="/download", method = RequestMethod.POST)
-    public String retrieveFile(String email){
-
-        CloutFiles demoDocument = mongoTemplate.findOne(new BasicQuery("{emailId : \""+email+"\", docType : \"pictures\"}"), CloutFiles.class);
-        System.out.println(demoDocument);
-        // Binary document = demoDocument.getDocument();
-        // if(document != null) {
-        //     FileOutputStream fileOuputStream = null;
-        //     try {
-        //         fileOuputStream = new FileOutputStream(RETRIEVE_FOLDER + "prof_pic.jpg");
-        //         fileOuputStream.write(document.getData());
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //         return "failure";
-        //     } finally {
-        //         if (fileOuputStream != null) {
-        //             try {
-        //                 fileOuputStream.close();
-        //             } catch (IOException e) {
-        //                 e.printStackTrace();
-        //                 return "failure";
-        //             }
-        //         }
-        //     }
-        // }
+    public String retrieveFile(String email, String filename){
+        email = "ismailarishah@gmail.com";
+        filename = "test";
+        Query query = new Query();
+        query.addCriteria(Criteria.where("file_name").is(filename));
+        CloutFiles download = mongoTemplate.findOne(query, CloutFiles.class);
+        // CloutFiles download = mongoTemplate.findOne(new BasicQuery("{user_id : \"" + email+"\", file_name : \"" + filename+"}"), CloutFiles.class);
+        System.out.println(download);
+        Binary document = download.getDocument();
+        if(document != null) {
+            FileOutputStream fileOuputStream = null;
+            try {
+                fileOuputStream = new FileOutputStream(RETRIEVE_FOLDER + "prof_pic.jpg");
+                fileOuputStream.write(document.getData());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "failure";
+            } finally {
+                if (fileOuputStream != null) {
+                    try {
+                        fileOuputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return "failure";
+                    }
+                }
+            }
+        }
         return "success";
     }
 
@@ -87,6 +96,12 @@ public class BackendFileController implements FileRepository {
 
     @Override
     public List<CloutFiles> findByemail() {
+        return null;
+    }
+    
+    @Override
+    public CloutFiles findByfileName(String file_name){
+        mongoTemplate.
         return null;
     }
 

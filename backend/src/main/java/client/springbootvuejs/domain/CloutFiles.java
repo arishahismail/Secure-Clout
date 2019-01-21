@@ -16,6 +16,7 @@ public class CloutFiles {
     private ObjectId _id;
     @Field
     private String user_id;
+    private String filelocation;
     @Field
     private Binary file;
     @Field
@@ -39,6 +40,13 @@ public class CloutFiles {
     }
     public void setuser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public String get_filelocation(){
+        return filelocation;
+    }
+    public void set_filelocation(String filelocation){
+        this.filelocation = filelocation;
     }
 
     public Binary getfile() {
