@@ -1,5 +1,7 @@
 package client.springbootvuejs.domain;
 
+import java.util.Date;
+
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -19,7 +21,11 @@ public class CloutFiles {
     @Field
     private String file_name;
     @Field
-    private String date;
+    private Date date;
+
+    public CloutFiles(){
+
+    }
 
     public ObjectId getid() {
         return _id;
@@ -49,15 +55,15 @@ public class CloutFiles {
         this.file_name = file_name;
     }
 
-    public String getdate() {
+    public Date getdate() {
         return date;
     }
-    public void set_date(String date) {
+    public void set_date(Date date) {
         this.date = date;
     }
     @Override
     public String toString() {
-        return String.format(user_id + file + file_name + date);
+        return String.format("File details\n" + user_id + " "+ file + " " + file_name + " " + date);
     }
 
 }

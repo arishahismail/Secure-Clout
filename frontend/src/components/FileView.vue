@@ -210,9 +210,25 @@
           },
           close () {
             console.log('Dialog closed')
-            }
+            },
+          
           }
       } 
+  },
+  methods: {
+          filesChange(event){
+            this.somedata = event.target.files[0]
+          },
+          upload() {
+            AXIOS.post(`/upload`)
+              .then(response => {
+                console.log("halo issa call")
+                console.log(this.$store.state.email)
+              })
+              .catch(e => {
+                console.log(e);
+              })
+          },
   }
 }
 </script>

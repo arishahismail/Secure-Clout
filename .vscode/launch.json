@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - encryptdecrypt",
+            "request": "launch",
+            "mainClass": "client.springbootvuejs.domain.encryptdecrypt",
+            "projectName": "backend"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - Application",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -10,6 +17,6 @@
             "mainClass": "client.springbootvuejs.Application",
             "args": "",
             "projectName": "backend"
-        },
+        }
     ]
 }

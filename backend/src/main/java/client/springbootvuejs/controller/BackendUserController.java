@@ -1,7 +1,6 @@
 package client.springbootvuejs.controller;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,14 +71,4 @@ public class BackendUserController {
         return temppass;
     }
 
-    @RequestMapping("/tell")
-    public List<CloutUser> getAll() {
-        try {
-            System.out.println(repository.findAll());
-            return repository.findAll();
-        } catch (Exception e) {
-            System.out.println("The error is " + e + " KAPPPPPPPPPPPPPPPPPAAAAAAAAAAAAAAA");
-        }
-        return repository.findAll();
-    }
 }

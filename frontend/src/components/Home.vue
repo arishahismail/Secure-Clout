@@ -58,12 +58,12 @@
                       <v-card-title class="title">Upload file</v-card-title>
                       <div class='dropbox'>
                           <input class='input-file' type="file" multiple 
-                            @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
-                            v-file="FileName"
+                            
+                            v-file="selectedFile"
                              id= 'filedialog'
                             accept="/*" >
                       </div>
-                      <v-card-text class="text">File name: {{filesChange}}</v-card-text>
+                      <v-card-text class="text">File name: <v-text-field v-model="file_name"></v-text-field></v-card-text>
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
@@ -97,7 +97,10 @@
                   <td class="text-xs-left">{{ props.item.date }}</td>
                 </template>
               </v-data-table>
-
+          <v-snackbar v-model="snackbar" :timeout="timeout">
+                  {{snackText}}
+                  <v-btn dark flat color="red" @click="snackbar = false"> Close</v-btn>
+                </v-snackbar>
           </v-flex>
         </v-layout>
       </v-container>
@@ -112,8 +115,13 @@ import {
   export default {
     data(){
       return {
+        snackbar: false,
+        snackText: '',
+        timeout: 6000,
         dialog: false,
         search: '',
+        file_name: '',
+        selectedFile: '',
         selected: [],
         headers: [
           {
@@ -154,19 +162,33 @@ import {
         }
       },
       methods: {
-          filesChange(event){
-            this.somedata = event.target.files[0]
-          },
+          // filesChange(event){
+          //   console.log(event.target.name)
+          //   this.selected = event.target.name
+          // },
           upload() {
-            AXIOS.post(`/upload`)
+            AXIOS.post(`/upload/` + this.$store.state.email + `/` + this.selectedFile + `/` + this.file_name)
               .then(response => {
                 console.log("halo issa call")
                 console.log(this.$store.state.email)
+                if (response.data == "success") {
+                  this.snackbar = true
+                  this.snackText = "Successfull encrypted and uploaded file"
+                  this.dialog = false
+                } 
+                else {
+                  this.snackbar = true
+                  this.snackText = "Upload fail. Try again."
+                }
               })
               .catch(e => {
                 console.log(e);
               })
+            console.log(this.selectedFile)
+            console.log(this.file_name)
+            
           },
+          
     }
     
   }
